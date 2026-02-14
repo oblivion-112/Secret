@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <meta property="og:title" content="To: Apple">
+
+<meta property="og:description" content="Just a little something I made for you.">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* 1. Define the custom font */
+@font-face {
+    font-family: 'CormorantGaramond';
+    src: url('CormorantGaramond-LightItalic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* 2. Update the paragraph style */
+.paragraph {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+    margin-bottom: 40px;
+    
+    /* Change these lines */
+    font-family: 'CormorantGaramond', serif; 
+    font-size: 2.0rem; /* Custom fonts often need to be slightly larger */
+    line-height: 1.8;
+    font-weight: 300;
+    font-style: normal;
+}
+
+        :root {
+            --accent: #ff4d6d;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text-main: #f1f5f9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            height: 200vh; /* Allows for scrolling interaction */
+        }
+
+        /* High-Performance Canvas */
+        #heart-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        /* Professional Glass Card */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20vh;
+        }
+
+        .main-card {
+            width: 90%;
+            max-width: 650px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff4d6d, #ff8fa3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-text {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .scroll-indicator {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* The Long Letter Section */
+        .letter-section {
+            margin-top: 10vh;
+            max-width: 600px;
+            padding-bottom: 20vh;
+        }
+
+        .paragraph {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .paragraph.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 1px solid var(--accent);
+        }
+
+        /* Secret Interaction Overlay */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+        }
+
+        .unlock-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .unlock-btn:hover {
+            background: white;
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="overlay">
+        <button class="unlock-btn" onclick="init()">Unveil My Heart</button>
+    </div>
+
+    <canvas id="heart-canvas"></canvas>
+
+    <div class="content-wrapper">
+        <div class="main-card">
+            <h1>Dear Apple.</h1>
+            <p class="sub-text">A digital testament as a silent admirer.</p>
+            <div class="scroll-indicator">Scroll to Read</div>
+        </div>
+
+        <div class="letter-section" id="letter">
+            <div class="paragraph">I've been thinking about it lately, I just want to say that Happy Valentine's Day, pretty. You might have an idea of who I am when you read this and you might find it a bit awkward, but hey, I just want you to know that you are <span class="highlight" onmouseover="popHearts(event)">worth it, you are worth fighting for, and you deserved to be treated the way you want to get treated.</span> I've been seeing yoour repost lately but don't think of me as a creep huh:> It's just hovering on my fyp this days and I also want you to know that you are always loved, and of course, by me:p..</div>
+            
+            <div class="paragraph">I know you miss someone right now, but it's totally fine. I will continue what I had started, and that is <span class="highlight" onmouseover="popHearts(event)">admiring you from a distance.</span> There's something chill about just admiring you without you knowing. I love watching those stories where you're just being you, especially <span class="highlight" onmouseover="popHearts(event)">seeing how cheerful you are.</span> I totally get that your heart is in a different place right now, and that's okay. I'm not here to take anyone's place. I’m just glad I get to be one of the people who sees how great you are while you’re finding your feet again.</div>
+
+            <div class="paragraph">I've wanted to say something for a while now, but I figured Valentine's Day was the perfect excuse to finally be honest (even I am saying it through a program). To be honest, I find myself constantly <span class="highlight" onmouseover="popHearts(event)">impressed by the person you are</span>, not just because of how much of a presence you have, but because of the small things I notice, like your <span class="highlight" onmouseover="popHearts(event)">kindness toward others</span>, <span class="highlight" onmouseover="popHearts(event)">great sense of humor</span> and being a <span class="highlight" onmouseover="popHearts(event)">kupal</span> hahahah. Kidding aside, you have a way of brightening up a room without even trying, and I've really enjoyed getting to know you from the sidelines.</div>
+
+            <div class="paragraph">This digital space is <span class="highlight" onmouseover="popHearts(event)">yours.</span> Every heart that pops on this screen is a thought I've had of you (sounds oa 'no). But as you can see, they are fleeting, beautiful, and endless <span class="highlight" onmouseover="popHearts(event)">just like your very existence.</span></div>
+
+            <div class="paragraph">I didn't want the day to pass without letting you know that you're someone I truly admire. You carry yourself with such a <span class="highlight" onmouseover="popHearts(event)">genuine energy</span> that it's hard not to notice, and I'd love the chance to get to know the person behind that smile a little better. I hope your day is filled with all the <span class="highlight" onmouseover="popHearts(event)">appreciation you deserve</span>, because someone as special as you definitely deserves to be celebrated.</div>
+
+            <div class="paragraph" style="margin-top: 60px; padding: 25px; background: rgba(255, 77, 109, 0.05); border-radius: 20px; border: 1px dashed rgba(255, 77, 109, 0.3); text-align: left;">
+    <span style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent); display: block; margin-bottom: 12px; font-style: italic;">A note on the music... 🎧</span>
+    <p style="font-size: 1.1rem; line-height: 1.6; font-family: 'Inter', sans-serif; font-style: normal; color: #94a3b8;">
+        I chose <b>"love" by wave to earth</b> because it’s exactly how this feels. The song is about a love so pure that you’d want to become the very world someone walks on just to keep them happy. It’s about being "so high" on the simple joy of someone’s existence. Just like the lyrics, I’m content just being in your orbit, watching you be exactly who you are. It's just a simple program but I hope you like it:>
+    </p>
+</div>
+
+            <div class="paragraph" style="font-family: 'Playfair Display'; font-style: italic; font-size: 2rem; color: var(--accent);">Yours, Always.</div>
+        </div>
+    </div>
+
+    <audio id="myValentineAudio" loop>
+    <source src="wave to earth - love. (Official Lyric Video).mp3" type="audio/mpeg">
+    <source src="wave to earth - love. (Official Lyric Video).wav" type="audio/wav">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('heart-canvas');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+
+       function init() {
+    // 1. Grab the audio element immediately
+    const audio = document.getElementById('myValentineAudio');
+    
+    // 2. Set volume BEFORE playing (0.3 is usually better for phone speakers)
+    audio.volume = 0.3; 
+    
+    // 3. Use a "User Interaction" wrapper for mobile stability
+    audio.play().then(() => {
+        console.log("Audio playing successfully on mobile");
+    }).catch(error => {
+        // If it still fails, we try to play it again without the volume setting first
+        audio.play();
+        console.log("Secondary play attempt");
+    });
+
+    // 4. Run your visual transitions
+    document.getElementById('overlay').style.opacity = '0';
+    setTimeout(() => {
+        document.getElementById('overlay').style.display = 'none';
+    }, 1000);
+
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Heart {
+            constructor(x, y, isAmbient = false) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 12 + 6;
+                this.speedX = (Math.random() - 0.5) * (isAmbient ? 1 : 10);
+                this.speedY = isAmbient ? (Math.random() * -1 - 0.5) : (Math.random() * -15 - 5);
+                this.gravity = isAmbient ? 0 : 0.3;
+                this.opacity = 1;
+                this.color = `hsla(${Math.random() * 20 + 340}, 80%, 60%, 1)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY += this.gravity;
+                this.opacity -= 0.01;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function popHearts(e) {
+            const x = e.clientX || e.target.getBoundingClientRect().left + 50;
+            const y = e.clientY || e.target.getBoundingClientRect().top;
+            for(let i=0; i<15; i++) {
+                hearts.push(new Heart(x, y));
+            }
+        }
+
+        // Mouse move heart trail
+        window.addEventListener('mousemove', (e) => {
+            if(Math.random() > 0.85) hearts.push(new Heart(e.clientX, e.clientY, true));
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background ambient hearts
+            if(Math.random() > 0.95) {
+                hearts.push(new Heart(Math.random() * canvas.width, canvas.height + 10, true));
+            }
+
+            hearts.forEach((heart, index) => {
+                heart.update();
+                heart.draw();
+                if(heart.opacity <= 0) hearts.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Scroll Reveal Logic
+        const observerOptions = { threshold: 0.5 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.paragraph').forEach(p => observer.observe(p));
+
+    </script>
+</body>
+</html>
